@@ -1,32 +1,63 @@
 <script >
+// import FirstComponent from './components/FirstComponent.vue'
+// import SecondComponent from './components/SecondComponent.vue'
+// import ThirdComponent from './components/ThirdComponent.vue'
+export default {
+  data() {
+    return {
+      currentStep: 0,
+      steps: ['1', '2', '3'],
+      completedSteps: [false, false, false],
+      componentList:['FirstComonent','SecondComponent','ThirdComponent'],
+    }
+  },
+  computed: {
+    progressPercent() {
+      return (this.currentStep / (this.steps.length - 1)) * 100 + '%'
+    },
+  },
+  methods: {
+    previousStep() {
+      if (this.currentStep > 0) {
+        this.completedSteps[this.currentStep-1] = false;
+        this.currentStep--
+      }
+    },
+    nextStep() {
+      if (this.currentStep < this.steps.length - 1) {
+        this.completedSteps[this.currentStep] = true;
+        this.currentStep++
+      }
+    },
+  },
+
+}
 </script>
 
 <template>
   <div class="w-full flex justify-center dark:bg-slate-600 h-screen page-content">
     <div class="w-[90%] sm:w-[70%]">
       <div class="steper-componnet">
-        <div class="progress-empty">
-            <div class="progress-full"></div>
+        <div class="progress-empty" >
+            <div class="progress-full" :style="{ width: progressPercent }"></div>
         </div>
         <div class="cercles-steper">
-            <span class="cercle">1</span>
-            <span class="cercle">2</span>
-            <span class="cercle">3</span>
+          <span v-for="(step, index) in steps" :key="index" class="circle" :class="{ active: index === currentStep, completed: completedSteps[index] }">
+            {{ completedSteps[index] ? '✔' : step }}
+          </span>
         </div>
       </div>
+      <FirstComponent></FirstComponent>
       <div class="w-full flex justify-between">
-        <button class="px-2.5 py-1 border-2 border-gray-800 rounded-sm font-bold bg-gray-700 text-white hover:bg-gray-800 hover:dark:bg-gray-200 dark:bg-white dark:text-gray-700">Previous</button>
-        <button class="px-2.5 py-1 border-2 border-gray-800 rounded-sm font-bold bg-gray-700 text-white hover:bg-gray-800 hover:dark:bg-gray-200 dark:bg-white dark:text-gray-700">Next</button>
+        <button @click="previousStep" class="px-2.5 py-1 border-2 border-gray-800 rounded-sm font-bold bg-gray-700 text-white hover:bg-gray-800 hover:dark:bg-gray-200 dark:bg-white dark:text-gray-700">Previous</button>
+        <button @click="nextStep" class="px-2.5 py-1 border-2 border-gray-800 rounded-sm font-bold bg-gray-700 text-white hover:bg-gray-800 hover:dark:bg-gray-200 dark:bg-white dark:text-gray-700">Next</button>
       </div>
     </div>
   </div>
 </template>
 
 <style>
-.page-content{
-  z-index: -2;
-}
-.steper-componnet .progress-empty {
+.progress-empty {
   background-color: #000a07 !important;
   border-radius: 10px;
   height: 4px;
@@ -36,8 +67,7 @@
   top: 21px;
   z-index: -1;
 }
-.steper-componnet .progress-empty .progress-full {
-  width: 0%;
+.progress-full {
   height: 100%;
   background-color: #ff9900;
   transition: 0.5s;
@@ -50,7 +80,16 @@
   margin-left: 20%;
   width: 60%;
 }
-.steper-componnet .cercles-steper .cercle {
+.circle.active {
+  background-color: #ff9900;
+  color: black;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-between;
+}
+.circle {
   width: 40px;
   height: 40px;
   border-radius: 50%;
