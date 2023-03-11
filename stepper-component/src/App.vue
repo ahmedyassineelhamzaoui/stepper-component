@@ -1,10 +1,18 @@
 <script >
-// import FirstComponent from './components/FirstComponent.vue'
-// import SecondComponent from './components/SecondComponent.vue'
-// import ThirdComponent from './components/ThirdComponent.vue'
+import FirstComponent from './components/FirstComponent.vue'
+import SecondComponent from './components/SecondComponent.vue'
+import ThirdComponent from './components/ThirdComponent.vue'
 export default {
+  components:{
+    FirstComponent,
+    SecondComponent,
+    ThirdComponent,
+  },
+  
   data() {
     return {
+      hideButtons: false,
+      message: false,
       currentStep: 0,
       steps: ['1', '2', '3'],
       completedSteps: [false, false, false],
@@ -25,18 +33,23 @@ export default {
     },
     nextStep() {
       if (this.currentStep < this.steps.length - 1) {
+        this.hideButtons=true;
         this.completedSteps[this.currentStep] = true;
         this.currentStep++
       }
-    },
+    },  
   },
-
+  // mounted() {
+  //   this.$on('hide-buttons', (value) => {
+  //     this.hideButtons = value;
+  //   });
+  // }
 }
 </script>
 
 <template>
   <div class="w-full flex justify-center dark:bg-slate-600 h-screen page-content">
-    <div class="w-[90%] sm:w-[70%]">
+    <div class="w-[90%] sm:w-[90%]">
       <div class="steper-componnet">
         <div class="progress-empty" >
             <div class="progress-full" :style="{ width: progressPercent }"></div>
@@ -47,11 +60,21 @@ export default {
           </span>
         </div>
       </div>
-      <FirstComponent></FirstComponent>
-      <div class="w-full flex justify-between">
-        <button @click="previousStep" class="px-2.5 py-1 border-2 border-gray-800 rounded-sm font-bold bg-gray-700 text-white hover:bg-gray-800 hover:dark:bg-gray-200 dark:bg-white dark:text-gray-700">Previous</button>
-        <button @click="nextStep" class="px-2.5 py-1 border-2 border-gray-800 rounded-sm font-bold bg-gray-700 text-white hover:bg-gray-800 hover:dark:bg-gray-200 dark:bg-white dark:text-gray-700">Next</button>
+      <div v-if="currentStep==0">
+        <FirstComponent></FirstComponent>
       </div>
+      <div v-else-if="currentStep == 1">
+        <SecondComponent :hideButtons="hideButtons"></SecondComponent>
+      </div>
+      <div v-else>
+        <ThirdComponent></ThirdComponent>
+      </div>
+      
+      <div class="w-full flex justify-between my-bottons"  v-if="!hideButtons" >
+        <button  @click="previousStep" class="px-2.5 py-1 border-2 border-gray-800 rounded-sm font-bold bg-gray-700 text-white hover:bg-gray-800 hover:dark:bg-gray-200 dark:bg-white dark:text-gray-700">Previous</button>
+        <button  @click="nextStep" class="px-2.5 py-1 border-2 border-gray-800 rounded-sm font-bold bg-gray-700 text-white hover:bg-gray-800 hover:dark:bg-gray-200 dark:bg-white dark:text-gray-700">Next</button>
+      </div>
+
     </div>
   </div>
 </template>
