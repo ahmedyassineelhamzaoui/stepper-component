@@ -1,10 +1,9 @@
 <script>
-export default{
-    
+export default {
+  
 }
 </script>
 <template>
-    this is the third component
+   
 </template>
-<style>
-</style>
+<style></style>

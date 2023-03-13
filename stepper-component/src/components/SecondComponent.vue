@@ -3,6 +3,8 @@ export default {
     name: "Secondomponent",
     data() {
         return {
+            newQuestions: [],
+            score: 0,
             countdown: 3,
             currentQuestion: 0,
             timer: 20,
@@ -18,6 +20,8 @@ export default {
                         { id: 'c', text: 'Amazon EC2 instances can be launched on demand when needed', selectedChoice: null },
                         { id: 'd', text: 'Users can permanently run enough instances to handle peak workloads', selectedChoice: null },
                     ],
+                    correctAnswear: 'c',
+                    explanation:'hello world'
                 },
                 {
                     text: 'Which AWS service would simplify the migration of a database to AWS?',
@@ -27,6 +31,9 @@ export default {
                         { id: 'c', text: 'Amazon EC2', selectedChoice: null },
                         { id: 'd', text: 'Amazon AppStream 2.0', selectedChoice: null },
                     ],
+                    correctAnswear: 'b',
+                    explanation:'hello world'
+
                 },
                 {
                     text: 'Which AWS offering enables users to find, buy, and immediately start using software solutions in their AWS environment?',
@@ -36,6 +43,8 @@ export default {
                         { id: 'c', text: 'AWS SDK', selectedChoice: null },
                         { id: 'd', text: 'AWS Marketplace', selectedChoice: null },
                     ],
+                    correctAnswear: 'd',
+                    explanation:'hello world'
                 },
                 {
                     text: 'Which AWS networking service enables a company to create a virtual network within AWS?',
@@ -45,7 +54,10 @@ export default {
                         { id: 'c', text: 'AWS Direct Connect', selectedChoice: null },
                         { id: 'd', text: 'Amazon Virtual Private Cloud (Amazon VPC)', selectedChoice: null },
                     ],
+                    correctAnswear: 'd',
+                    explanation:'hello world'
                 },
+
                 {
                     text: 'Which of the following is an AWS responsibility under the AWS shared responsibility model?',
                     choices: [
@@ -54,6 +66,8 @@ export default {
                         { id: 'c', text: 'Securing application access and data', selectedChoice: null },
                         { id: 'd', text: 'Managing guest operating systems', selectedChoice: null },
                     ],
+                    correctAnswear: 'b',
+                    explanation:'hello world'
                 },
                 {
                     text: 'Which component of the AWS global infrastructure does Amazon CloudFront use to ensure low-latency delivery?',
@@ -63,6 +77,8 @@ export default {
                         { id: 'c', text: 'Availability Zones', selectedChoice: null },
                         { id: 'd', text: 'Virtual Private Cloud (VPC)', selectedChoice: null },
                     ],
+                    correctAnswear: 'b',
+                    explanation:'hello world'
                 },
                 {
                     text: 'How would a system administrator add an additional layer of login security to a users AWSManagement Console?',
@@ -72,6 +88,8 @@ export default {
                         { id: 'c', text: 'Enable multi-factor authentication', selectedChoice: null },
                         { id: 'd', text: 'Enable AWS CloudTrail', selectedChoice: null },
                     ],
+                    correctAnswear: 'a',
+                    explanation:'hello world'
                 },
                 {
                     text: 'Which service can identify the user that made the API call when an Amazon EC2 instance is terminated?',
@@ -81,6 +99,9 @@ export default {
                         { id: 'c', text: 'AWS X-Ray', selectedChoice: null },
                         { id: 'd', text: 'AWS Identity and Access Management (AWS IAM)', selectedChoice: null },
                     ],
+                    correctAnswear: 'b',
+                    explanation:'hello world'
+
                 },
                 {
                     text: '"Which service would be used to send alerts based on Amazon CloudWatch alarms?',
@@ -90,6 +111,9 @@ export default {
                         { id: 'c', text: 'AWS Trusted Advisor', selectedChoice: null },
                         { id: 'd', text: 'Amazon Route 53', selectedChoice: null },
                     ],
+                    correctAnswear: 'a',
+                    explanation:'hello world'
+
                 },
                 {
                     text: 'Where can a user find information about prohibited actions on the AWS infrastructure?',
@@ -99,6 +123,9 @@ export default {
                         { id: 'c', text: 'AWS Billing Console', selectedChoice: null },
                         { id: 'd', text: 'AWS Acceptable Use Policy', selectedChoice: null },
                     ],
+                    correctAnswear: 'd',
+                    explanation:'hello world'
+
                 },
             ]
         }
@@ -152,13 +179,31 @@ export default {
                 this.currentQuestion++;
             } else {
                 this.hidediv = true
-                this.$emit('changeStatus', false);
+                this.checkAnswer()
+                this.$emit('changeStatus', false, this.score);
             }
         },
+        checkAnswer() {
+            this.score = 0;
+            this.questions.forEach(question => {
+                if (question.correctAnswear === this.getCheckedChoices(question).toString()) {
+                    this.score++;
+
+                } else {
+                    const fullQuestion = {
+                        question: question.id,
+                        selectedChoices: checkedChoices,
+                        correctChoices: correctChoices,
+                        explanation: question.explanation
+                    };
+                    this.newQuestions.push(fullQuestion);
+                }
+            });
     },
-    mounted() {
-        this.startCountdown();
-    }
+},
+mounted() {
+    this.startCountdown();
+}
 }
 </script>
 <template>
