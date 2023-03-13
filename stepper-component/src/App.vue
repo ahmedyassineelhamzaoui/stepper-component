@@ -12,7 +12,6 @@ export default {
   data() {
     return {
       hideButtons: false,
-      message: false,
       currentStep: 0,
       steps: ['1', '2', '3'],
       completedSteps: [false, false, false],
@@ -33,17 +32,18 @@ export default {
     },
     nextStep() {
       if (this.currentStep < this.steps.length - 1) {
-        this.hideButtons=true;
         this.completedSteps[this.currentStep] = true;
         this.currentStep++
       }
     },  
+    handleStatusChange(newStatus) {
+      console.log('New status received from child:', newStatus)
+      this.hideButtons=newStatus
+    }
   },
-  // mounted() {
-  //   this.$on('hide-buttons', (value) => {
-  //     this.hideButtons = value;
-  //   });
-  // }
+  
+
+    
 }
 </script>
 
@@ -64,7 +64,7 @@ export default {
         <FirstComponent></FirstComponent>
       </div>
       <div v-else-if="currentStep == 1">
-        <SecondComponent :hideButtons="hideButtons"></SecondComponent>
+        <SecondComponent v-on:changeStatus="handleStatusChange"></SecondComponent>
       </div>
       <div v-else>
         <ThirdComponent></ThirdComponent>
