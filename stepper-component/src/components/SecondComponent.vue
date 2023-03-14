@@ -11,6 +11,7 @@ export default {
             hidbutton: true,
             hidediv: false,
             countTimerInterval: null,
+            checkedAnswear: [],
             questions: [
                 {
                     text: 'Why is AWS more economical than traditional data centers for applications with varying compute workloads?',
@@ -21,7 +22,7 @@ export default {
                         { id: 'd', text: 'Users can permanently run enough instances to handle peak workloads', selectedChoice: null },
                     ],
                     correctAnswear: 'c',
-                    explanation:'hello world'
+                    explanation: 'hello world0'
                 },
                 {
                     text: 'Which AWS service would simplify the migration of a database to AWS?',
@@ -32,7 +33,7 @@ export default {
                         { id: 'd', text: 'Amazon AppStream 2.0', selectedChoice: null },
                     ],
                     correctAnswear: 'b',
-                    explanation:'hello world'
+                    explanation: 'hello world1'
 
                 },
                 {
@@ -44,7 +45,7 @@ export default {
                         { id: 'd', text: 'AWS Marketplace', selectedChoice: null },
                     ],
                     correctAnswear: 'd',
-                    explanation:'hello world'
+                    explanation: 'hello world2'
                 },
                 {
                     text: 'Which AWS networking service enables a company to create a virtual network within AWS?',
@@ -55,7 +56,7 @@ export default {
                         { id: 'd', text: 'Amazon Virtual Private Cloud (Amazon VPC)', selectedChoice: null },
                     ],
                     correctAnswear: 'd',
-                    explanation:'hello world'
+                    explanation: 'hello world3'
                 },
 
                 {
@@ -67,7 +68,7 @@ export default {
                         { id: 'd', text: 'Managing guest operating systems', selectedChoice: null },
                     ],
                     correctAnswear: 'b',
-                    explanation:'hello world'
+                    explanation: 'hello world4'
                 },
                 {
                     text: 'Which component of the AWS global infrastructure does Amazon CloudFront use to ensure low-latency delivery?',
@@ -78,7 +79,7 @@ export default {
                         { id: 'd', text: 'Virtual Private Cloud (VPC)', selectedChoice: null },
                     ],
                     correctAnswear: 'b',
-                    explanation:'hello world'
+                    explanation: 'hello world5'
                 },
                 {
                     text: 'How would a system administrator add an additional layer of login security to a users AWSManagement Console?',
@@ -89,7 +90,7 @@ export default {
                         { id: 'd', text: 'Enable AWS CloudTrail', selectedChoice: null },
                     ],
                     correctAnswear: 'a',
-                    explanation:'hello world'
+                    explanation: 'hello world6'
                 },
                 {
                     text: 'Which service can identify the user that made the API call when an Amazon EC2 instance is terminated?',
@@ -100,11 +101,11 @@ export default {
                         { id: 'd', text: 'AWS Identity and Access Management (AWS IAM)', selectedChoice: null },
                     ],
                     correctAnswear: 'b',
-                    explanation:'hello world'
+                    explanation: 'hello world7'
 
                 },
                 {
-                    text: '"Which service would be used to send alerts based on Amazon CloudWatch alarms?',
+                    text: 'Which service would be used to send alerts based on Amazon CloudWatch alarms?',
                     choices: [
                         { id: 'a', text: 'Amazon Simple Notification Service (Amazon SNS)', selectedChoice: null },
                         { id: 'b', text: 'AWS CloudTrail', selectedChoice: null },
@@ -112,7 +113,7 @@ export default {
                         { id: 'd', text: 'Amazon Route 53', selectedChoice: null },
                     ],
                     correctAnswear: 'a',
-                    explanation:'hello world'
+                    explanation: 'hello world8'
 
                 },
                 {
@@ -124,7 +125,7 @@ export default {
                         { id: 'd', text: 'AWS Acceptable Use Policy', selectedChoice: null },
                     ],
                     correctAnswear: 'd',
-                    explanation:'hello world'
+                    explanation: 'hello world9'
 
                 },
             ]
@@ -153,11 +154,11 @@ export default {
         },
         getCheckedChoices() {
             const checkedChoices = this.questions[this.currentQuestion].choices.filter(choice => choice.selectedChoice)
-            if (checkedChoices.length > 0) {
-                return checkedChoices.map(choice => choice.id)
-            } else {
-                return []
-            }
+                if (checkedChoices.length > 0) {
+                    return checkedChoices.map(choice => choice.id)
+                } else {
+                    this.checkedAnswear.push('')
+                }
         },
         showNextButton() {
             if (this.currentQuestion <= 9) {
@@ -166,11 +167,7 @@ export default {
         },
         clickNext() {
             const checkedChoices = this.getCheckedChoices()
-            if (checkedChoices.length > 0) {
-                console.log(checkedChoices)
-            } else {
-                console.log("nothing selected")
-            }
+            this.checkedAnswear.push(checkedChoices)
             clearInterval(this.countTimerInterval);
             this.hidbutton = true
             if (this.currentQuestion < 9) {
@@ -180,30 +177,31 @@ export default {
             } else {
                 this.hidediv = true
                 this.checkAnswer()
-                this.$emit('changeStatus', false, this.score);
+                this.$emit('changeStatus', false, this.score, this.newQuestions);
             }
         },
         checkAnswer() {
             this.score = 0;
+            console.log(this.checkedAnswear.toString())
+            let i=0;
             this.questions.forEach(question => {
-                if (question.correctAnswear === this.getCheckedChoices(question).toString()) {
+                console.log(question.correctAnswear)
+                if (question.correctAnswear === this.checkedAnswear[i].toString()) {
                     this.score++;
-
                 } else {
                     const fullQuestion = {
-                        question: question.id,
-                        selectedChoices: checkedChoices,
-                        correctChoices: correctChoices,
-                        explanation: question.explanation
+                        question: question,
+                        selectedChoices: this.checkedAnswear[i],
                     };
                     this.newQuestions.push(fullQuestion);
                 }
+                i++
             });
+        },
     },
-},
-mounted() {
-    this.startCountdown();
-}
+    mounted() {
+        this.startCountdown();
+    }
 }
 </script>
 <template>
