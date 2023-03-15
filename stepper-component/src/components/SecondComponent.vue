@@ -22,7 +22,7 @@ export default {
                         { id: 'd', text: 'Users can permanently run enough instances to handle peak workloads', selectedChoice: null },
                     ],
                     correctAnswear: 'c',
-                    explanation: 'hello world0'
+                    explanation: 'The ability to launch instances on demand when needed allows users to launch and terminate instances in response to a varying workload. This is a more economical practice than purchasing enough on-premises serversto handle the peak load'
                 },
                 {
                     text: 'Which AWS service would simplify the migration of a database to AWS?',
@@ -33,7 +33,7 @@ export default {
                         { id: 'd', text: 'Amazon AppStream 2.0', selectedChoice: null },
                     ],
                     correctAnswear: 'b',
-                    explanation: 'hello world1'
+                    explanation: 'AWS DMS helps users migrate databases to AWS quickly and securely. The source database remains fully operational during the migration, minimizing downtime to applications that rely on the database. AWS DMS can migrate data to and from most widely used commercial and open-source databases'
 
                 },
                 {
@@ -45,7 +45,7 @@ export default {
                         { id: 'd', text: 'AWS Marketplace', selectedChoice: null },
                     ],
                     correctAnswear: 'd',
-                    explanation: 'hello world2'
+                    explanation: 'AWS Marketplace is a digital catalog with thousands of software listings from independent software vendors that makes it easy to find, test, buy, and deploy software that runs on AWS.'
                 },
                 {
                     text: 'Which AWS networking service enables a company to create a virtual network within AWS?',
@@ -56,9 +56,8 @@ export default {
                         { id: 'd', text: 'Amazon Virtual Private Cloud (Amazon VPC)', selectedChoice: null },
                     ],
                     correctAnswear: 'd',
-                    explanation: 'hello world3'
+                    explanation: 'Amazon VPC lets users provision a logically isolated section of the AWS Cloud where users can launch AWS resources in a virtual network that they define.'
                 },
-
                 {
                     text: 'Which of the following is an AWS responsibility under the AWS shared responsibility model?',
                     choices: [
@@ -68,7 +67,7 @@ export default {
                         { id: 'd', text: 'Managing guest operating systems', selectedChoice: null },
                     ],
                     correctAnswear: 'b',
-                    explanation: 'hello world4'
+                    explanation: 'Maintaining physical hardware is an AWS responsibility under the AWS shared responsibility model'
                 },
                 {
                     text: 'Which component of the AWS global infrastructure does Amazon CloudFront use to ensure low-latency delivery?',
@@ -79,7 +78,7 @@ export default {
                         { id: 'd', text: 'Virtual Private Cloud (VPC)', selectedChoice: null },
                     ],
                     correctAnswear: 'b',
-                    explanation: 'hello world5'
+                    explanation: 'To deliver content to users with lower latency, Amazon CloudFront uses a global network of points of presence (edge locations and regional edge caches) worldwide.'
                 },
                 {
                     text: 'How would a system administrator add an additional layer of login security to a users AWSManagement Console?',
@@ -90,7 +89,7 @@ export default {
                         { id: 'd', text: 'Enable AWS CloudTrail', selectedChoice: null },
                     ],
                     correctAnswear: 'a',
-                    explanation: 'hello world6'
+                    explanation: 'Multi-factor authentication (MFA) is a simple best practice that adds an extra layer of protection on top of a  username and password. With MFA enabled, when a user signs in to an AWS Management Console, they will be  prompted for their username and password (the first factor—what they know), as well as for an authentication  code from their MFA device (the second factor—what they have). Taken together, these multiple factors provide increased security for AWS account settings and resources.'
                 },
                 {
                     text: 'Which service can identify the user that made the API call when an Amazon EC2 instance is terminated?',
@@ -101,7 +100,7 @@ export default {
                         { id: 'd', text: 'AWS Identity and Access Management (AWS IAM)', selectedChoice: null },
                     ],
                     correctAnswear: 'b',
-                    explanation: 'hello world7'
+                    explanation: 'AWS CloudTrail helps users enable governance, compliance, and operational and risk auditing of their  AWS accounts. Actions taken by a user, role, or an AWS service are recorded as events in CloudTrail. Events  include actions taken in the AWS Management Console, AWS Command Line Interface (CLI), and AWS SDKs and APIs'
 
                 },
                 {
@@ -113,7 +112,7 @@ export default {
                         { id: 'd', text: 'Amazon Route 53', selectedChoice: null },
                     ],
                     correctAnswear: 'a',
-                    explanation: 'hello world8'
+                    explanation: 'Amazon SNS and Amazon CloudWatch are integrated so users can collect, view, and analyze metrics for every active SNS. Once users have configured CloudWatch for Amazon SNS, they can gain better insight into the performance of their Amazon SNS topics, push notifications, and SMS deliveries.'
 
                 },
                 {
@@ -125,7 +124,7 @@ export default {
                         { id: 'd', text: 'AWS Acceptable Use Policy', selectedChoice: null },
                     ],
                     correctAnswear: 'd',
-                    explanation: 'hello world9'
+                    explanation: 'The AWS Acceptable Use Policy provides information regarding prohibited actions on the AWS infrastructure.'
 
                 },
             ]
@@ -182,11 +181,10 @@ export default {
         },
         checkAnswer() {
             this.score = 0;
-            console.log(this.checkedAnswear.toString())
             let i=0;
             this.questions.forEach(question => {
                 console.log(question.correctAnswear)
-                if (question.correctAnswear === this.checkedAnswear[i].toString()) {
+                if (question.correctAnswear === this.checkedAnswear[i]) {
                     this.score++;
                 } else {
                     const fullQuestion = {
@@ -212,20 +210,20 @@ export default {
     </div>
     <div v-else>
         <div>
-            <div class="absolute top-1 left-2">
+            <div class="">
                 <div class="flex justify-center items-center w-full">
                     <div class="bg-gray-300 w-24 h-24  rounded-full"></div>
                     <div class="flex items-center justify-center text-white absolute bg-zinc-700 rounded-full w-20 h-20">
                         <p class="text-white font-bold" id="date-crono">{{ this.timer }}</p>
                     </div>
                 </div>
-                <p class="text-center">Question<span class="curent-question">{{ this.currentQuestion + 1 }}</span>/<span
+                <p class="text-center">Question <span class="curent-question"> {{ this.currentQuestion + 1 }}</span > / <span
                         class="total-question">10</span></p>
             </div>
             <div class="bg-gray-700 w-4/5 h-2 mt-14  m-auto rounded">
                 <div class="bg-yellow-500 h-full rounded "></div>
             </div>
-            <h5 class="mb-2 text-center text-xl font-bold  dark:text-white">
+            <h5 class="mb-2 mt-16 text-center text-xl font-bold  dark:text-white">
                 {{ questions[this.currentQuestion].text }}
             </h5>
             <div
@@ -242,7 +240,7 @@ export default {
         </div>
         <div v-if="!this.hidediv">
             <button v-if="!this.hidbutton" @click="clickNext"
-                class="flex border-dashed border-2 border-blue-700 bg-slate-600 rounded-md px-3 py-2 my-3 text-white">Next</button>
+                class="flex border-dashed  border-2 border-blue-700 bg-slate-600 rounded-md px-3 py-2 my-3 text-white">Next</button>
         </div>
 
     </div>

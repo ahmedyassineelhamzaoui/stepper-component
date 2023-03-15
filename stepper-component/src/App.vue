@@ -1,5 +1,6 @@
 <script >
-import { getTransitionRawChildren } from 'vue'
+import "@fortawesome/fontawesome-free/css/all.css";
+
 import FirstComponent from './components/FirstComponent.vue'
 import SecondComponent from './components/SecondComponent.vue'
 import ThirdComponent from './components/ThirdComponent.vue'
@@ -34,9 +35,13 @@ export default {
       }
     },
     nextStep() {
+      
       if (this.currentStep < this.steps.length - 1) {
         this.completedSteps[this.currentStep] = true;
         this.currentStep++
+      }
+      if(this.currentStep==2){
+        document.querySelector('.next-btn').innerHTML="<a href=''>take another quiz</a>"
       }
     },
     handleStatusChange(newStatus, score, newQuestions) {
@@ -44,6 +49,16 @@ export default {
       this.Myscore = score
       this.questions = newQuestions;
       console.log(newQuestions)
+    },   
+    isWrongAnswer(wrongAnswear,i){
+      for(let j=0;j<wrongAnswear.selectedChoices.length;j++){
+        if(wrongAnswear.question.choices[i].id === wrongAnswear.selectedChoices[j]){
+          return true
+        }
+      }
+    },
+    isCorrectAnswer(wrongAnswear,i) {
+      return  wrongAnswear.question.choices[i].id === wrongAnswear.question.correctAnswear;                                                                                                                             
     },
   },
 
@@ -60,8 +75,8 @@ export default {
           <div class="progress-full" :style="{ width: progressPercent }"></div>
         </div>
         <div class="cercles-steper">
-          <span v-for="(step, index) in steps" :key="index" class="circle"
-            :class="{ active: index === currentStep, completed: completedSteps[index] }">
+          <span  v-for="(step, index) in steps" :key="index" class="circle"
+            :class="{ active: index === currentStep, completed: completedSteps[index] } ">
             {{ completedSteps[index] ? '✔' : step }}
           </span>
         </div>
@@ -79,18 +94,40 @@ export default {
           <div
             class="w-full mb-4 p-6 text-sky-900 bg-white border border-gray-200 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700 ">
             <p class="font-bold flex flex-start text-stone-800  text-md">The Question:{{ wrongAnswear.question.text }}</p>
-            <p class="flex font-sans  items-center text-stone-600 text-md"><i
-                class="fa-solid fa-circle-dot mr-2"></i><span>{{ wrongAnswear.question.choices[0].text }}
+            <p class="flex font-sans  items-center text-md"  
+            :class="{
+              'text-green-600': isCorrectAnswer(wrongAnswear, 0),
+              'text-red-600': isWrongAnswer(wrongAnswear,0)  && !isCorrectAnswer(wrongAnswear, 0),
+           }">
+            <i
+                class="fa-solid fa-circle-dot mr-2" ></i><span>{{ wrongAnswear.question.choices[0].text }}
               </span></p>
-            <p class="flex font-sans  items-center text-stone-600 text-md"><i
+            <p class="flex font-sans  items-center text-md"
+            :class="{
+              'text-green-600': isCorrectAnswer(wrongAnswear,1),
+              'text-red-600': isWrongAnswer(wrongAnswear,1)  && !isCorrectAnswer(wrongAnswear, 1),
+
+            }">
+            <i
                 class="fa-solid fa-circle-dot mr-2"></i><span>{{ wrongAnswear.question.choices[1].text }}
-              </span>asjk</p>
-            <p class="flex font-sans  items-center text-stone-600 text-md"><i
+              </span></p>
+            <p class="flex font-sans  items-center text-md" 
+            :class="{
+              'text-green-600': isCorrectAnswer(wrongAnswear,2),
+              'text-red-600': isWrongAnswer(wrongAnswear,2)  && !isCorrectAnswer(wrongAnswear, 2),
+
+            }">
+            <i
                 class="fa-solid fa-circle-dot mr-2"></i><span>{{ wrongAnswear.question.choices[2].text }}
-              </span>lkds</p>
-            <p class="flex font-sans  items-center text-stone-600 text-md"><i
+              </span></p>
+            <p class="flex font-sans  items-center text-md" 
+            :class="{
+              'text-green-600': isCorrectAnswer(wrongAnswear,3),
+              'text-red-600': isWrongAnswer(wrongAnswear,3)  && !isCorrectAnswer(wrongAnswear, 3),
+            }"
+            ><i
                 class="fa-solid fa-circle-dot mr-2"></i><span>{{ wrongAnswear.question.choices[3].text }}
-              </span>yassine</p>
+              </span></p>
           </div>
           <div
             class="w-full mb-4 p-6 bg-white border border-gray-200 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700">
@@ -104,17 +141,18 @@ export default {
               </span>
               <span class="text-xl text-amber-500">Explnation</span>
             </h1>
-            <p class="flex font-sans font-bold items-center text-cyan-900 text-md">{{ wrongAnswear.question.explanation}}</p>
+            <p class="flex font-sans font-bold items-center text-cyan-900 text-md">{{ wrongAnswear.question.explanation }}
+            </p>
           </div>
         </div>
 
       </div>
 
-      <div class="w-full flex justify-between my-bottons" v-if="!hideButtons">
+      <div class="w-[80%] mx-auto  flex justify-between  my-bottons" v-if="!hideButtons">
         <button @click="previousStep"
-          class="px-2.5 py-1 border-2 border-gray-800 rounded-sm font-bold bg-gray-700 text-white hover:bg-gray-800 hover:dark:bg-gray-200 dark:bg-white dark:text-gray-700">Previous</button>
+          class="previous px-2.5 py-1 border-2 border-gray-800 rounded-sm font-bold bg-gray-700 text-white hover:bg-gray-800 hover:dark:bg-gray-200 dark:bg-white dark:text-gray-700">Previous</button>
         <button @click="nextStep"
-          class="px-2.5 py-1 border-2 border-gray-800 rounded-sm font-bold bg-gray-700 text-white hover:bg-gray-800 hover:dark:bg-gray-200 dark:bg-white dark:text-gray-700">Next</button>
+          class="next-btn px-2.5 py-1 border-2 mb-2 border-gray-800 rounded-sm font-bold bg-gray-700 text-white hover:bg-gray-800 hover:dark:bg-gray-200 dark:bg-white dark:text-gray-700">Next</button>
       </div>
 
     </div>
@@ -129,7 +167,7 @@ export default {
   width: 60%;
   margin-left: 20%;
   position: relative;
-  top: 21px;
+  top: 26px;
   z-index: -1;
 }
 
@@ -143,7 +181,7 @@ export default {
   z-index: 0;
   display: flex;
   justify-content: space-between;
-  margin-bottom: 20px;
+  margin-bottom: 4em;
   margin-left: 20%;
   width: 60%;
 }
@@ -151,6 +189,7 @@ export default {
 .circle.active {
   background-color: #ff9900;
   color: black;
+  font-weight: bolder;
 }
 
 .buttons {
@@ -159,8 +198,8 @@ export default {
 }
 
 .circle {
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   border: 2px solid #ff9900;
   background-color: black;
@@ -169,4 +208,8 @@ export default {
   color: #ff9900;
   justify-content: center;
   align-items: center;
-}</style>
+}
+.previous{
+  visibility: hidden;
+}
+</style>
